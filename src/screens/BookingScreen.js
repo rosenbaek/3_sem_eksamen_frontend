@@ -6,6 +6,7 @@ import examFacade from "../facades/examFacade";
 
 const ProtectedScreen = () => {
 	const [cars, setCars] = useState([]);
+	const [reload, setReload] = useState(false);
 	const [assistants, setAssistants] = useState([]);
 
 	useEffect(() => {
@@ -16,16 +17,23 @@ const ProtectedScreen = () => {
 			console.log(JSON.stringify(response));
 			setAssistants(response);
 		});
-	}, []);
+	}, [reload]);
 
 	useEffect(() => {
 		console.log(JSON.stringify(cars));
 	});
 
+	const reloadNow = () => {
+		setReload(!reload);
+	};
 	return (
 		<div>
 			<h2 className="header">Booking Screen</h2>
-			<AddBookingComponent assistants={assistants} cars={cars} />
+			<AddBookingComponent
+				assistants={assistants}
+				cars={cars}
+				reload={reloadNow}
+			/>
 			<AssistantComponent />
 			{cars.map((car) => {
 				return <CarComponent key={car.registration} car={car} />;

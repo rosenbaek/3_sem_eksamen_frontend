@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Col, Form, Row, Table } from "react-bootstrap";
+import examFacade from "../facades/examFacade";
 
-const AddBookingComponent = ({ assistants, cars }) => {
+const AddBookingComponent = ({ assistants, cars, reload }) => {
 	const initialState = {
-		car: "",
+		carReg: "",
 		dateTime: "",
 		duration: 0,
 		washingAssistants: [],
 	};
 	const [filteredAssistants, setFilteredAssistants] = useState([]);
 	const [selected, setSelected] = useState([]);
-	const car = [{ brand: "audi", make: "A4" }];
 	const [booking, setBooking] = useState(initialState);
 	const [searchValue, setSearchValue] = useState("");
 
@@ -21,18 +21,20 @@ const AddBookingComponent = ({ assistants, cars }) => {
 		setBooking({ ...booking, [id]: value });
 	};
 
-	useEffect(() => {
-		console.log(JSON.stringify(booking));
-	});
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		booking.washingAssistants = selected;
+		booking.dateTime = new Date(booking.dateTime);
 		if (selected.length === 0) {
 			alert("please select at least one assistant");
 		} else if (booking.car === "") {
 			alert("please select a car");
 		} else {
-			alert(JSON.stringify(booking));
+			examFacade.addBooking(booking, () => {
+				alert("Succes");
+				setBooking(initialState);
+				reload();
+			});
 		}
 	};
 
@@ -59,22 +61,21 @@ const AddBookingComponent = ({ assistants, cars }) => {
 		setSearchValue("");
 	};
 
-	const removeAssistantFromBooking = (assistant) => {
-		setSelected(
-			selected.filter((a) => {
-				return assistant.id !== a.id;
-			})
-		);
-	};
-
 	return (
-		<div style={{ backgroundColor: "green" }}>
+		<div
+			style={{
+				margin: 20,
+				padding: 20,
+				backgroundColor: "#ebebeb",
+				borderRadius: 7,
+			}}
+		>
 			<h3>Add Booking</h3>
 			<Form onSubmit={handleSubmit} style={{ justifyContent: "center" }}>
 				<Row className="mb-3">
 					<Form.Group as={Col}>
 						<Form.Label>Car:</Form.Label>
-						<Form.Control as="select" id="car" onChange={handleChange}>
+						<Form.Control as="select" id="carReg" onChange={handleChange}>
 							<option disabled>Choose car</option>
 							{cars.map((car) => {
 								return (

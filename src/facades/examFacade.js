@@ -25,10 +25,20 @@ const examFacade = () => {
 			});
 	};
 
+	const addBooking = (body, callback) => {
+		const options = ApiFacade.makeOptions("POST", true, body);
+		return fetch(URL + "/api/carwash/booking", options)
+			.then(ApiFacade.handleHttpErrors)
+			.then((res) => {
+				return callback(res);
+			});
+	};
+
 	return {
 		createUser,
 		fetchAssistants,
 		getUserData,
+		addBooking,
 	};
 };
 
