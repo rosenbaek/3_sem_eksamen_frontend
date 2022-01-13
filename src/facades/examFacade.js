@@ -34,11 +34,19 @@ const examFacade = () => {
 			});
 	};
 
+	const createAssistant = (body) => {
+		const options = ApiFacade.makeOptions("POST", true, body);
+		return fetch(URL + "/api/carwash/assistants", options).then(
+			ApiFacade.handleHttpErrors
+		);
+	};
+
 	return {
 		createUser,
 		fetchAssistants,
 		getUserData,
 		addBooking,
+		createAssistant,
 	};
 };
 
