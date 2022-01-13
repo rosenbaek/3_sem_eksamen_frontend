@@ -3,7 +3,7 @@ import { Button, Col, Form, Row, Table } from "react-bootstrap";
 
 const AddBookingComponent = ({ assistants, cars }) => {
 	const initialState = {
-		car: {},
+		car: "",
 		dateTime: "",
 		duration: 0,
 		washingAssistants: [],
@@ -22,12 +22,18 @@ const AddBookingComponent = ({ assistants, cars }) => {
 	};
 
 	useEffect(() => {
-		console.log(JSON.stringify(selected));
+		console.log(JSON.stringify(booking));
 	});
 	const handleSubmit = (event) => {
 		event.preventDefault();
-
-		alert("Please select atleast one role");
+		booking.washingAssistants = selected;
+		if (selected.length === 0) {
+			alert("please select at least one assistant");
+		} else if (booking.car === "") {
+			alert("please select a car");
+		} else {
+			alert(JSON.stringify(booking));
+		}
 	};
 
 	const handleFilter = (event) => {
@@ -68,18 +74,18 @@ const AddBookingComponent = ({ assistants, cars }) => {
 				<Row className="mb-3">
 					<Form.Group as={Col}>
 						<Form.Label>Car:</Form.Label>
-						<Form.Select aria-label="Default select example">
-							<option>Select Car</option>
+						<Form.Control as="select" id="car" onChange={handleChange}>
+							<option disabled>Choose car</option>
 							{cars.map((car) => {
 								return (
-									<option value={car}>
+									<option value={car.registration}>
 										Registration: {car.registration.toUpperCase()}, Brand:{" "}
 										{car.brand.toUpperCase()}, Make: {car.make.toUpperCase()},
 										Year: {car.year}
 									</option>
 								);
 							})}
-						</Form.Select>
+						</Form.Control>
 					</Form.Group>
 					<Form.Group as={Col}>
 						<Form.Label>Time:</Form.Label>
@@ -96,6 +102,7 @@ const AddBookingComponent = ({ assistants, cars }) => {
 						<Form.Control
 							type="search"
 							id="search"
+							placeholder="Search Wasshing Assistants"
 							onChange={handleFilter}
 							value={searchValue}
 							style={{
@@ -143,49 +150,55 @@ const AddBookingComponent = ({ assistants, cars }) => {
 								) : null}
 							</tbody>
 						</Table>
-						<Table
-							striped
-							bordered
-							hover
-							style={{
-								marginLeft: "auto",
-								marginRight: "auto",
-							}}
-						>
-							<thead>
-								<tr>
-									<th>Name</th>
-									<th>Primary Language</th>
-									<th>Experience</th>
-									<th>Hourly Rate</th>
-									<th>Remove</th>
-								</tr>
-							</thead>
-							<tbody>
-								{selected &&
-									selected.map((assistant) => {
-										return (
-											<tr key={assistant}>
-												<td>{assistant.name}</td>
-												<td>{assistant.primaryLanguage}</td>
-												<td>{assistant.experience}</td>
-												<td>{assistant.rate}</td>
-												<td>
-													<Button
-														variant="danger"
-														size="sm"
-														onClick={(assistant) =>
-															removeAssistantFromBooking(assistant)
-														}
-													>
-														Remove
-													</Button>
-												</td>
-											</tr>
-										);
-									})}
-							</tbody>
-						</Table>
+						{selected && selected.length > 0 ? (
+							<Table
+								striped
+								bordered
+								hover
+								style={{
+									marginLeft: "auto",
+									marginRight: "auto",
+								}}
+							>
+								<thead>
+									<tr>
+										<th>Name</th>
+										<th>Primary Language</th>
+										<th>Experience</th>
+										<th>Hourly Rate</th>
+										<th>Remove</th>
+									</tr>
+								</thead>
+								<tbody>
+									{selected &&
+										selected.map((assistant) => {
+											return (
+												<tr key={assistant}>
+													<td>{assistant.name}</td>
+													<td>{assistant.primaryLanguage}</td>
+													<td>{assistant.experience}</td>
+													<td>{assistant.rate}</td>
+													<td>
+														<Button
+															variant="danger"
+															size="sm"
+															onClick={() => {
+																setSelected([
+																	...selected.filter(
+																		(as) => as.id !== Number(assistant.id)
+																	),
+																]);
+															}}
+														>
+															Remove
+														</Button>
+													</td>
+												</tr>
+											);
+										})}
+								</tbody>
+							</Table>
+						) : null}
 					</Form.Group>
 				</Row>
 
