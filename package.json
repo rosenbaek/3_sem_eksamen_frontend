@@ -1,6 +1,6 @@
 {
 	"homepage": "/eksamen",
-	"name": "jokes-router-frontend",
+	"name": "eksamen-frontend",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {

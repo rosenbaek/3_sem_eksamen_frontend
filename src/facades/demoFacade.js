@@ -1,17 +1,17 @@
 import { URL } from "../constants.js";
-import ApiFacade from "./apiFacade";
+import Facade from "./apiFacade";
 
-const Facade = () => {
-  const dataThreads = () => {
-    const options = ApiFacade.makeOptions("GET", true);
-    return fetch(URL + "/api/info/threads", options).then(
-      ApiFacade.handleHttpErrors
-    );
-  };
+const demoFacade = () => {
+	const dataThreads = () => {
+		const options = Facade.makeOptions("GET", true);
+		return fetch(URL + "/api/info/threads", options).then(
+			Facade.handleHttpErrors
+		);
+	};
 
-  return {
-    dataThreads,
-  };
+	return {
+		dataThreads,
+	};
 };
 
-export default Facade();
+export default demoFacade();

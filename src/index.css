@@ -24,7 +24,13 @@ ul.header {
 ul.header li {
 	float: left;
 }
-
+ul.header li div {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
 ul.header li a {
 	display: block;
 	color: white;
@@ -35,6 +41,9 @@ ul.header li a {
 ul.header li a:hover:not(.active) {
 	background-color: #111;
 }
+ul.header li div:hover:not(.active) {
+	background-color: #111;
+}
 .active {
-	background-color: #4caf50;
+	background-color: #808080;
 }
