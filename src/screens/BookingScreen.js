@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AddBookingComponent from "../components/AddBookingComponent";
 import AssistantComponent from "../components/AssistantComponent";
 import CarComponent from "../components/CarComponent";
+import apiFacade from "../facades/apiFacade";
 import examFacade from "../facades/examFacade";
 
 const ProtectedScreen = () => {
@@ -10,9 +11,16 @@ const ProtectedScreen = () => {
 	const [assistants, setAssistants] = useState([]);
 
 	useEffect(() => {
-		examFacade.getUserData((response) => {
-			setCars(response.cars);
-		});
+		const roles = apiFacade.getUser().roles;
+		if (roles.includes("admin")) {
+			examFacade.getAllCars((response) => {
+				setCars(response);
+			});
+		} else {
+			examFacade.getUserData((response) => {
+				setCars(response.cars);
+			});
+		}
 		examFacade.fetchAssistants((response) => {
 			console.log(JSON.stringify(response));
 			setAssistants(response);
@@ -36,7 +44,15 @@ const ProtectedScreen = () => {
 			/>
 			<AssistantComponent />
 			{cars.map((car) => {
-				return <CarComponent key={car.registration} car={car} />;
+				return (
+					<CarComponent
+						key={car.registration}
+						car={car}
+						assistants={assistants}
+						cars={cars}
+						reload={reloadNow}
+					/>
+				);
 			})}
 		</div>
 	);

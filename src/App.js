@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "react-datetime/css/react-datetime.css";
 import Login from "./screens/LoginScreen";
 import { Switch, Route, useHistory } from "react-router-dom";
 import Nav from "./components/Header";

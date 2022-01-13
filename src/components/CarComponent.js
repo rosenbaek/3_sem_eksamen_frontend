@@ -1,6 +1,8 @@
+import { useState } from "react";
+import { Button, Modal } from "react-bootstrap";
 import BookingCardComponent from "./BookingCardComponent";
 
-const CarComponent = ({ car }) => {
+const CarComponent = ({ car, cars, assistants, reload }) => {
 	return (
 		<div
 			style={{
@@ -16,7 +18,16 @@ const CarComponent = ({ car }) => {
 			<p>{car.year}</p>
 			<h6>Bookings:</h6>
 			{car.bookings.map((booking) => {
-				return <BookingCardComponent booking={booking} />;
+				return (
+					<BookingCardComponent
+						key={booking.id}
+						currentCar={car}
+						bookingInitial={booking}
+						assistants={assistants}
+						cars={cars}
+						reload={reload}
+					/>
+				);
 			})}
 		</div>
 	);

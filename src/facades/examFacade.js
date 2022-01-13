@@ -33,6 +33,14 @@ const examFacade = () => {
 				return callback(res);
 			});
 	};
+	const editBooking = (body, callback) => {
+		const options = ApiFacade.makeOptions("PUT", true, body);
+		return fetch(URL + "/api/carwash/booking", options)
+			.then(ApiFacade.handleHttpErrors)
+			.then((res) => {
+				return callback(res);
+			});
+	};
 
 	const createAssistant = (body) => {
 		const options = ApiFacade.makeOptions("POST", true, body);
@@ -41,12 +49,23 @@ const examFacade = () => {
 		);
 	};
 
+	const getAllCars = (callback) => {
+		const options = ApiFacade.makeOptions("GET", true);
+		return fetch(URL + "/api/carwash/cars", options)
+			.then(ApiFacade.handleHttpErrors)
+			.then((res) => {
+				return callback(res);
+			});
+	};
+
 	return {
 		createUser,
 		fetchAssistants,
 		getUserData,
 		addBooking,
 		createAssistant,
+		getAllCars,
+		editBooking,
 	};
 };
 
