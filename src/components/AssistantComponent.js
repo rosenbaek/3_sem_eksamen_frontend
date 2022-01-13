@@ -4,6 +4,7 @@ import examFacade from "../facades/examFacade";
 
 const AssistantComponent = () => {
 	const [assistants, setAssistants] = useState([]);
+	const [cars, setCars] = useState([]);
 
 	useEffect(() => {
 		examFacade.fetchAssistants((response) => {
@@ -11,10 +12,6 @@ const AssistantComponent = () => {
 			setAssistants(response);
 		});
 	}, []);
-
-	useEffect(() => {
-		console.log(JSON.stringify(assistants));
-	});
 
 	return (
 		<div

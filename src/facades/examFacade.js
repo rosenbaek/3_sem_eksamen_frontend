@@ -16,9 +16,19 @@ const examFacade = () => {
 			});
 	};
 
+	const getUserData = (callback) => {
+		const options = ApiFacade.makeOptions("GET", true);
+		return fetch(URL + "/api/user", options)
+			.then(ApiFacade.handleHttpErrors)
+			.then((res) => {
+				return callback(res);
+			});
+	};
+
 	return {
 		createUser,
 		fetchAssistants,
+		getUserData,
 	};
 };
 
