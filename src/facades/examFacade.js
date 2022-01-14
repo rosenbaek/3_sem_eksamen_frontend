@@ -42,6 +42,15 @@ const examFacade = () => {
 			});
 	};
 
+	const deleteBooking = (id, callback) => {
+		const options = ApiFacade.makeOptions("DELETE", true);
+		return fetch(URL + "/api/carwash/booking/" + id, options)
+			.then(ApiFacade.handleHttpErrors)
+			.then((res) => {
+				return callback(res);
+			});
+	};
+
 	const createAssistant = (body) => {
 		const options = ApiFacade.makeOptions("POST", true, body);
 		return fetch(URL + "/api/carwash/assistants", options).then(
@@ -66,6 +75,7 @@ const examFacade = () => {
 		createAssistant,
 		getAllCars,
 		editBooking,
+		deleteBooking,
 	};
 };
 

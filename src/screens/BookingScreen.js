@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Container } from "react-bootstrap";
 import AddBookingComponent from "../components/AddBookingComponent";
 import AssistantComponent from "../components/AssistantComponent";
 import CarComponent from "../components/CarComponent";
@@ -35,7 +36,7 @@ const ProtectedScreen = () => {
 		setReload(!reload);
 	};
 	return (
-		<div>
+		<Container fluid="md">
 			<h2 className="header">Booking Screen</h2>
 			<AddBookingComponent
 				assistants={assistants}
@@ -54,7 +55,7 @@ const ProtectedScreen = () => {
 					/>
 				);
 			})}
-		</div>
+		</Container>
 	);
 };
 

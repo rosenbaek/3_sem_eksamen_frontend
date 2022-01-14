@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Button, Col, Form, Row, Table } from "react-bootstrap";
 import examFacade from "../facades/examFacade";
+import Datetime from "react-datetime";
 
 const AddBookingComponent = ({ assistants, cars, reload }) => {
 	const initialState = {
 		carReg: "",
-		dateTime: "",
+		dateTime: Date.now(),
 		duration: 0,
 		washingAssistants: [],
 	};
@@ -19,6 +20,10 @@ const AddBookingComponent = ({ assistants, cars, reload }) => {
 		const id = target.id;
 		const value = target.value;
 		setBooking({ ...booking, [id]: value });
+	};
+
+	const updateTime = (time) => {
+		setBooking({ ...booking, dateTime: time.format() });
 	};
 
 	const handleSubmit = (event) => {
@@ -90,38 +95,35 @@ const AddBookingComponent = ({ assistants, cars, reload }) => {
 					</Form.Group>
 					<Form.Group as={Col}>
 						<Form.Label>Time:</Form.Label>
-						<Form.Control
-							type="datetime-local"
+						<Datetime
 							id="dateTime"
-							onChange={handleChange}
-							value={booking.dateTime}
-							required
+							onChange={updateTime}
+							value={new Date(booking.dateTime)}
 						/>
 					</Form.Group>
-					<Form.Group>
+				</Row>
+				<Row className="mb-3">
+					<Form.Group as={Col}>
+						<Form.Label>Duration:</Form.Label>
+						<Form.Control
+							type="number"
+							id="duration"
+							onChange={handleChange}
+							value={booking.duration}
+							min={1}
+						/>
+					</Form.Group>
+
+					<Form.Group as={Col} xs={6}>
 						<Form.Label>Add Washing Assistants:</Form.Label>
 						<Form.Control
 							type="search"
 							id="search"
-							placeholder="Search Wasshing Assistants"
+							placeholder="Search Washing Assistants"
 							onChange={handleFilter}
 							value={searchValue}
-							style={{
-								width: "50%",
-								marginLeft: "auto",
-								marginRight: "auto",
-							}}
 						/>
-						<Table
-							striped
-							bordered
-							hover
-							style={{
-								width: "50%",
-								marginLeft: "auto",
-								marginRight: "auto",
-							}}
-						>
+						<Table striped bordered hover style={{ zIndex: 200 }}>
 							<tbody>
 								{filteredAssistants &&
 									filteredAssistants.slice(0, 5).map((assistant) => {
@@ -151,58 +153,59 @@ const AddBookingComponent = ({ assistants, cars, reload }) => {
 								) : null}
 							</tbody>
 						</Table>
-						{selected && selected.length > 0 ? (
-							<Table
-								striped
-								bordered
-								hover
-								style={{
-									marginLeft: "auto",
-									marginRight: "auto",
-								}}
-							>
-								<thead>
-									<tr>
-										<th>Name</th>
-										<th>Primary Language</th>
-										<th>Experience</th>
-										<th>Hourly Rate</th>
-										<th>Remove</th>
-									</tr>
-								</thead>
-								<tbody>
-									{selected &&
-										selected.map((assistant) => {
-											return (
-												<tr key={assistant}>
-													<td>{assistant.name}</td>
-													<td>{assistant.primaryLanguage}</td>
-													<td>{assistant.experience}</td>
-													<td>{assistant.rate}</td>
-													<td>
-														<Button
-															variant="danger"
-															size="sm"
-															onClick={() => {
-																setSelected([
-																	...selected.filter(
-																		(as) => as.id !== Number(assistant.id)
-																	),
-																]);
-															}}
-														>
-															Remove
-														</Button>
-													</td>
-												</tr>
-											);
-										})}
-								</tbody>
-							</Table>
-						) : null}
 					</Form.Group>
 				</Row>
 
+				{selected && selected.length > 0 ? (
+					<Table
+						striped
+						bordered
+						hover
+						style={{
+							marginLeft: "auto",
+							marginRight: "auto",
+							backgroundColor: "white",
+						}}
+					>
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Primary Language</th>
+								<th>Experience</th>
+								<th>Hourly Rate</th>
+								<th>Remove</th>
+							</tr>
+						</thead>
+						<tbody>
+							{selected &&
+								selected.map((assistant) => {
+									return (
+										<tr key={assistant}>
+											<td>{assistant.name}</td>
+											<td>{assistant.primaryLanguage}</td>
+											<td>{assistant.experience}</td>
+											<td>{assistant.rate}</td>
+											<td>
+												<Button
+													variant="danger"
+													size="sm"
+													onClick={() => {
+														setSelected([
+															...selected.filter(
+																(as) => as.id !== Number(assistant.id)
+															),
+														]);
+													}}
+												>
+													Remove
+												</Button>
+											</td>
+										</tr>
+									);
+								})}
+						</tbody>
+					</Table>
+				) : null}
 				<br></br>
 				<Button variant="primary" type="submit" value="Submit">
 					Submit

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Row } from "react-bootstrap";
 import BookingCardComponent from "./BookingCardComponent";
 
 const CarComponent = ({ car, cars, assistants, reload }) => {
@@ -13,22 +13,26 @@ const CarComponent = ({ car, cars, assistants, reload }) => {
 				textTransform: "capitalize",
 			}}
 		>
-			<h3>{car.brand}</h3>
-			<h5>{car.make}</h5>
-			<p>{car.year}</p>
+			<h3>Brand: {car.brand}</h3>
+			<h5>Make: {car.make}</h5>
+			<p>Year: {car.year}</p>
+			<p>Registration: {car.registration}</p>
+			<p>Total money spend: {car.totalCost}</p>
 			<h6>Bookings:</h6>
-			{car.bookings.map((booking) => {
-				return (
-					<BookingCardComponent
-						key={booking.id}
-						currentCar={car}
-						bookingInitial={booking}
-						assistants={assistants}
-						cars={cars}
-						reload={reload}
-					/>
-				);
-			})}
+			<Row className=".row-cols-md-2">
+				{car.bookings.map((booking) => {
+					return (
+						<BookingCardComponent
+							key={booking.id}
+							currentCar={car}
+							bookingInitial={booking}
+							assistants={assistants}
+							cars={cars}
+							reload={reload}
+						/>
+					);
+				})}
+			</Row>
 		</div>
 	);
 };

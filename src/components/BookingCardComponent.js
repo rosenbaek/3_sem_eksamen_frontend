@@ -55,7 +55,7 @@ const BookingCardComponent = ({
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		examFacade.editBooking(booking, () => {
-			alert("Succes");
+			setEditMode(false);
 			reload();
 		});
 	};
@@ -97,14 +97,24 @@ const BookingCardComponent = ({
 			setEditMode(true);
 		}
 	};
+
+	const deleteBooking = () => {
+		examFacade.deleteBooking(booking.id, () => {
+			reload();
+			alert("Succesfully deleted");
+		});
+	};
+
 	return (
-		<div
+		<Col
+			lg
 			style={{
 				display: "flex",
 				position: "relative",
-				padding: 20,
-				margin: 10,
-				backgroundColor: "grey",
+				padding: 10,
+				margin: 2,
+				backgroundColor: "#877666",
+				color: "white",
 				flexDirection: "column",
 				minWidth: "300px",
 				borderRadius: 7,
@@ -117,6 +127,7 @@ const BookingCardComponent = ({
 					top: -5,
 					fontSize: 30,
 				}}
+				onClick={deleteBooking}
 			></div>
 			{!editMode ? (
 				<div onClick={setEditModeTrue}>
@@ -211,6 +222,7 @@ const BookingCardComponent = ({
 							style={{
 								marginLeft: "auto",
 								marginRight: "auto",
+								color: "white",
 							}}
 						>
 							<thead>
@@ -225,7 +237,12 @@ const BookingCardComponent = ({
 							<tbody>
 								{booking.washingAssistants.map((assistant) => {
 									return (
-										<tr key={assistant}>
+										<tr
+											key={assistant}
+											style={{
+												color: "white",
+											}}
+										>
 											<td>{assistant.name}</td>
 											<td>{assistant.primaryLanguage}</td>
 											<td>{assistant.experience}</td>
@@ -250,14 +267,14 @@ const BookingCardComponent = ({
 
 					<br></br>
 					<Button
-						variant="primary"
+						variant="dark"
 						style={{ margin: 5 }}
 						onClick={() => setEditMode(false)}
 					>
 						Cancel
 					</Button>
 					<Button
-						variant="primary"
+						variant="dark"
 						style={{ margin: 5 }}
 						type="submit"
 						value="Submit"
@@ -266,7 +283,7 @@ const BookingCardComponent = ({
 					</Button>
 				</Form>
 			)}
-		</div>
+		</Col>
 	);
 };
 
