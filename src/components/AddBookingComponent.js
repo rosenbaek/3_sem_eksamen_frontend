@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Form, Row, Table } from "react-bootstrap";
 import examFacade from "../facades/examFacade";
 import Datetime from "react-datetime";
@@ -14,6 +14,7 @@ const AddBookingComponent = ({ assistants, cars, reload }) => {
 	const [selected, setSelected] = useState([]);
 	const [booking, setBooking] = useState(initialState);
 	const [searchValue, setSearchValue] = useState("");
+	const [totalCost, setTotalCost] = useState(0);
 
 	const handleChange = (event) => {
 		const target = event.target;
@@ -21,6 +22,16 @@ const AddBookingComponent = ({ assistants, cars, reload }) => {
 		const value = target.value;
 		setBooking({ ...booking, [id]: value });
 	};
+
+	useEffect(() => {
+		if (selected.length > 0) {
+			var cost = 0;
+			selected.forEach((s) => {
+				cost += (s.rate / 60) * booking.duration;
+			});
+			setTotalCost(cost);
+		}
+	});
 
 	const updateTime = (time) => {
 		setBooking({ ...booking, dateTime: time.format() });
@@ -104,7 +115,7 @@ const AddBookingComponent = ({ assistants, cars, reload }) => {
 				</Row>
 				<Row className="mb-3">
 					<Form.Group as={Col}>
-						<Form.Label>Duration:</Form.Label>
+						<Form.Label>Duration in Minutes:</Form.Label>
 						<Form.Control
 							type="number"
 							id="duration"
@@ -206,7 +217,8 @@ const AddBookingComponent = ({ assistants, cars, reload }) => {
 						</tbody>
 					</Table>
 				) : null}
-				<br></br>
+				<p>Total Cost: {totalCost}</p>
+				<br />
 				<Button variant="primary" type="submit" value="Submit">
 					Submit
 				</Button>
