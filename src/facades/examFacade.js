@@ -67,6 +67,13 @@ const examFacade = () => {
 			});
 	};
 
+	const createCar = (body) => {
+		const options = ApiFacade.makeOptions("POST", true, body);
+		return fetch(URL + "/api/carwash/car", options).then(
+			ApiFacade.handleHttpErrors
+		);
+	};
+
 	return {
 		createUser,
 		fetchAssistants,
@@ -76,6 +83,7 @@ const examFacade = () => {
 		getAllCars,
 		editBooking,
 		deleteBooking,
+		createCar,
 	};
 };
 

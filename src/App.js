@@ -10,7 +10,7 @@ import Home from "./screens/HomeScreen";
 import BookingScreen from "./screens/BookingScreen";
 import Facade from "./facades/apiFacade";
 import AdminScreen from "./screens/AdminScreen";
-import DemoScreen from "./screens/DemoScreen";
+import UserScreen from "./screens/UserScreen";
 
 function App() {
 	const [loggedIn, setLoggedIn] = React.useState(Facade.loggedIn());
@@ -44,7 +44,7 @@ function App() {
 						<Login changeLoginStatus={changeLoginStatus} />
 					)}
 				</Route>
-				<PrivateRoute path="/demo" loggedIn={loggedIn} component={DemoScreen} />
+				<PrivateRoute path="/user" loggedIn={loggedIn} component={UserScreen} />
 				<PrivateRoute
 					path="/protected"
 					loggedIn={loggedIn}

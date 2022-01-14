@@ -33,8 +33,8 @@ const Nav = (props) => {
 							</div>
 						</li>
 						<li>
-							<NavLink exact activeclassname="active" to="/demo">
-								Demo
+							<NavLink exact activeclassname="active" to="/user">
+								User
 							</NavLink>
 						</li>
 						<li>
